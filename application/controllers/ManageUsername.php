@@ -43,11 +43,13 @@ class Manageusername extends CI_Controller
 			$nama = $_POST['name'];
 			$email = $_POST['email'];
 			$password1 = $_POST['password1'];
+			$role = '2';
 		}
 		$data = [
 			'name' => htmlspecialchars($this->input->post('name', true)),
 			'email' => htmlspecialchars($this->input->post('email', true)),
 			'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
+			'role' => $role,
 		];
 		$this->db->insert('tb_user', $data);
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Congratulation! your account has been created. Please Login!</div>');

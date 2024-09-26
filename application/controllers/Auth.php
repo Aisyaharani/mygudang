@@ -55,7 +55,7 @@ class Auth extends CI_Controller
 	public function registration()
 	{
 		$this->form_validation->set_rules('name','Name','trim|required');
-		$this->form_validation->set_rules('email','Email','trim|required|valid_email|is_unique[tb_admin.email]',['is_unique' => 'This email has already registered!']);
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[tb_user.email]', ['is_unique' => 'This email has already registered!']);
 		$this->form_validation->set_rules('password1','Password','trim|required|min_length[3]|matches[password2]',['matches'=> 'Password not match!','min_length' => 'Password too short!']);
 		$this->form_validation->set_rules('password2','Password','trim|required|matches[password1]');
 	
@@ -64,7 +64,9 @@ class Auth extends CI_Controller
 			$this->load->view('auth_templates/auth_header',$data);
 			$this->load->view('auth/registration');
 			$this->load->view('auth_templates/auth_footer');
-	} 
+		} else {
+			$this->simpanAkun();
+		}
 	}
 
 	public function simpanAkun()
@@ -73,11 +75,13 @@ class Auth extends CI_Controller
 			$nama = $_POST['name'];
 			$email = $_POST['email'];
 			$password1 = $_POST['password1'];
+			$role = '1';
 		}
 		$data = [
 					'name' => htmlspecialchars($this->input->post('name',true)),
 					'email' => htmlspecialchars($this->input->post('email',true)),
 					'password' =>password_hash($this->input->post('password1'),PASSWORD_DEFAULT),
+			'role' => $role,
 				];
 		$this->db->insert('tb_user', $data);
 				$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Congratulation! your account has been created. Please Login!</div>');
